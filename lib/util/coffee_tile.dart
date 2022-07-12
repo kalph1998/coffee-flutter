@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:coffee/pages/coffee_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -33,15 +35,56 @@ class CoffeeTile extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                coffeeImage,
-                fit: BoxFit.cover,
-                width: 200,
-                height: 200,
+            Stack(children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  coffeeImage,
+                  fit: BoxFit.cover,
+                  width: 200,
+                  height: 200,
+                ),
               ),
-            ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 9, sigmaY: 9),
+                    child: Container(
+                      color: Colors.black45,
+                      padding: const EdgeInsets.all(4),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Colors.orange,
+                            size: 15,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          RichText(
+                            text: const TextSpan(children: [
+                              TextSpan(
+                                text: '4.5',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
 
             //text
             Padding(
