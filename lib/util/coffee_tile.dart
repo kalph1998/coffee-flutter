@@ -9,13 +9,17 @@ class CoffeeTile extends StatelessWidget {
   final String coffeeImage;
   final String coffeeName;
   final String coffeeMilk;
-  final int coffeePrice;
+  final num coffeePrice;
+  final double coffeeRating;
+  final String coffeeId;
 
   CoffeeTile(
       {required this.coffeeImage,
       required this.coffeeName,
       required this.coffeeMilk,
-      required this.coffeePrice});
+      required this.coffeePrice,
+      required this.coffeeRating,
+      required this.coffeeId});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,8 @@ class CoffeeTile extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(CoffeePage.routeName);
+          Navigator.of(context)
+              .pushNamed(CoffeePage.routeName, arguments: coffeeId);
         },
         child: Container(
           padding: const EdgeInsets.all(12),
@@ -38,7 +43,7 @@ class CoffeeTile extends StatelessWidget {
             Stack(children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
+                child: Image.network(
                   coffeeImage,
                   fit: BoxFit.cover,
                   width: 200,
@@ -68,10 +73,11 @@ class CoffeeTile extends StatelessWidget {
                             width: 5,
                           ),
                           RichText(
-                            text: const TextSpan(children: [
+                            text: TextSpan(children: [
                               TextSpan(
-                                text: '4.5',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                text: coffeeRating.toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                             ]),
                           ),
@@ -101,7 +107,7 @@ class CoffeeTile extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    'with $coffeeMilk milk',
+                    'with $coffeeMilk ',
                     style: TextStyle(
                       color: Colors.grey[700],
                     ),
@@ -115,7 +121,7 @@ class CoffeeTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('\$ $coffeePrice.00'),
+                  Text('\$ $coffeePrice'),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),

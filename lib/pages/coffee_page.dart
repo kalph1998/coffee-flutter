@@ -1,10 +1,13 @@
 import 'dart:ui';
 
+import 'package:coffee/providers/coffee.dart';
+import 'package:coffee/providers/coffees.dart';
 import 'package:coffee/util/coffee_details.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 
 class CoffeePage extends StatefulWidget {
   static const routeName = '/coffee';
@@ -15,6 +18,17 @@ class CoffeePage extends StatefulWidget {
 }
 
 class _CoffeePageState extends State<CoffeePage> {
+  late Coffee coffeeData;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    final args = ModalRoute.of(context)!.settings.arguments;
+    Provider.of<Coffees>(context, listen: false)
+        .fetchCoffeeById(args as String)
+        .then((value) => coffeeData = value);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
