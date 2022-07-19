@@ -70,8 +70,15 @@ class Coffees with ChangeNotifier {
     final response = await http.get(url);
 
     final extractedData = json.decode(response.body);
-    print(extractedData);
 
-    return extractedData as Coffee;
+    return Coffee(
+        id: extractedData['_id'],
+        title: extractedData['name'],
+        description: extractedData['description'],
+        price: extractedData['price'],
+        imageUrl: extractedData['image'],
+        milk: extractedData['milk'],
+        rating: extractedData['rating'],
+        categoryId: extractedData['category']);
   }
 }

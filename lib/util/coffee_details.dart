@@ -3,7 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CoffeeDetails extends StatelessWidget {
-  const CoffeeDetails({Key? key}) : super(key: key);
+  final double coffeeRating;
+  final String coffeeName;
+  final String coffeeMilk;
+  const CoffeeDetails({
+    Key? key,
+    required this.coffeeMilk,
+    required this.coffeeName,
+    required this.coffeeRating,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +27,15 @@ class CoffeeDetails extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Cappuccino',
+                Text(
+                  coffeeName,
                   style: TextStyle(fontSize: 24),
                 ),
                 const SizedBox(
                   height: 2,
                 ),
                 Text(
-                  'With Oat Milk',
+                  'With $coffeeMilk',
                   style: TextStyle(color: Colors.grey[400]),
                 ),
                 const SizedBox(
@@ -44,9 +52,9 @@ class CoffeeDetails extends StatelessWidget {
                     ),
                     RichText(
                       text: TextSpan(children: [
-                        const TextSpan(
-                          text: '4.5',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        TextSpan(
+                          text: coffeeRating.toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
                           text: ' (6,986)',

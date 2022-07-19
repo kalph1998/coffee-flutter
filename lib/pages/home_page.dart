@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _isInit = true;
   var _isLoading = false;
+  var _isLoadingCoffee = false;
   List coffeeCategory = [];
 
   @override
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
       Provider.of<Coffees>(context).fetchCoffeeCategory().then(
             (value) => setState(() {
               _isLoading = false;
+              _isLoadingCoffee = false;
             }),
           );
     }
@@ -48,12 +50,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getSelectedCategoryCoffees(String id) async {
+    setState(() {
+      _isLoadingCoffee = true;
+    });
     await Provider.of<Coffees>(context, listen: false)
         .fetchCoffeesByCategoryId(id);
-  }
-
-  Future<void> _refreshCoffees(BuildContext context) async {
-    await Provider.of<Coffees>(context, listen: false).fetchCoffeeCategory();
+    setState(() {
+      _isLoadingCoffee = false;
+    });
   }
 
   @override
@@ -141,25 +145,29 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   //horizontal list view
-                  SizedBox(
-                    height: 320,
-                    child: ListView.builder(
-                      itemCount: coffees.length,
-                      shrinkWrap: true,
-                      primary: false,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return CoffeeTile(
-                          coffeeImage: coffees[index].imageUrl,
-                          coffeeName: coffees[index].title,
-                          coffeeMilk: coffees[index].milk,
-                          coffeePrice: coffees[index].price,
-                          coffeeRating: coffees[index].rating,
-                          coffeeId: coffees[index].id,
-                        );
-                      },
-                    ),
-                  ),
+                  _isLoadingCoffee
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : SizedBox(
+                          height: 320,
+                          child: ListView.builder(
+                            itemCount: coffees.length,
+                            shrinkWrap: true,
+                            primary: false,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return CoffeeTile(
+                                coffeeImage: coffees[index].imageUrl,
+                                coffeeName: coffees[index].title,
+                                coffeeMilk: coffees[index].milk,
+                                coffeePrice: coffees[index].price,
+                                coffeeRating: coffees[index].rating,
+                                coffeeId: coffees[index].id,
+                              );
+                            },
+                          ),
+                        ),
                   SizedBox(
                     height: 20,
                   ),
